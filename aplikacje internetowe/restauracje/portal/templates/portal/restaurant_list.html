@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista restauracji</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<h1>Lista restauracji</h1>
+
+<form method="get">
+    <input type="text" name="name" placeholder="Szukaj po nazwie" value="{{ request.GET.name }}">
+    <input type="text" name="city" placeholder="Szukaj po mieście" value="{{ request.GET.city }}">
+    <select name="menu">
+        <option value="">-- menu --</option>
+        <option value="polska" {% if request.GET.menu == "polska" %}selected{% endif %}>polska</option>
+        <option value="włoska" {% if request.GET.menu == "włoska" %}selected{% endif %}>włoska</option>
+        <option value="tajska" {% if request.GET.menu == "tajska" %}selected{% endif %}>tajska</option>
+        <option value="chińska" {% if request.GET.menu == "chińska" %}selected{% endif %}>chińska</option>
+        <option value="japońska" {% if request.GET.menu == "japońska" %}selected{% endif %}>japońska</option>
+        <option value="francuska" {% if request.GET.menu == "francuska" %}selected{% endif %}>francuska</option>
+        <option value="fast food" {% if request.GET.menu == "fast food" %}selected{% endif %}>fast food</option>
+        <option value="wegańska" {% if request.GET.menu == "wegańska" %}selected{% endif %}>wegańska</option>
+        <option value="amerykańska" {% if request.GET.menu == "amerykańska" %}selected{% endif %}>amerykańska</option>
+    </select>
+    <select name="sort">
+        <option value="name" {% if request.GET.sort == "name" %}selected{% endif %}>Sortuj A-Z</option>
+        <option value="-name" {% if request.GET.sort == "-name" %}selected{% endif %}>Sortuj Z-A</option>
+    </select>
+    <button type="submit">🔍 Filtruj</button>
+</form>
+
+<div class="grid">
+    {% for r in restaurants %}
+        <a href="{% url 'restaurant_detail' r.pk %}" class="card-link">
+            <div class="card">
+                <h3>{{ r.name }}</h3>
+                <p>{{ r.menu_type }} – {{ r.city }}</p>
+                <span class="stars">{{ r.rating_stars }}</span>
+                <small>({{ r.average_rating }})</small>
+            </div>
+        </a>
+    {% empty %}
+        <p>Brak wyników.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

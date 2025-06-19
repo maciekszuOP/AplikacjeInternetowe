@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ restaurant.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f9fc;
+            color: #444;
+            margin: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin: auto;
+        }
+        h1 {
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        .comments ul {
+            padding: 0;
+            list-style: none;
+        }
+        .comments li {
+            background: #f0f4f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .comment-rating {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        /* Kolory ocen */
+        .rating-5 {
+            background: #ffbf00; /* złoty */
+            color: white;
+        }
+        .rating-4 {
+            background: #2ee002; /* zielony */
+            color: white;
+        }
+        .rating-3 {
+            background: #508f9e; /* niebieskawy */
+            color: white;
+        }
+        .rating-2 {
+            background: #795e25; /* pomarańczowy */
+            color: white;
+        }
+        .rating-1 {
+            background: #4b1313; /* czerwony */
+            color: white;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ restaurant.name }}</h1>
+
+        <p><strong>Adres:</strong> {{ restaurant.address }}</p>
+        <p><strong>Typ kuchni:</strong> {{ restaurant.menu_type }}</p>
+
+        <div class="rating">
+            {{ restaurant.rating_stars }} <small>({{ restaurant.average_rating }})</small>
+        </div>
+
+        <div class="comments">
+            <h2>Komentarze</h2>
+            <ul>
+                {% for c in comments %}
+                    <li>
+                        {% if c.rating == 5 %}
+                            <span class="comment-rating rating-5">{{ c.rating }}/5</span>
+                        {% elif c.rating == 4 %}
+                            <span class="comment-rating rating-4">{{ c.rating }}/5</span>
+                        {% elif c.rating == 3 %}
+                            <span class="comment-rating rating-3">{{ c.rating }}/5</span>
+                        {% elif c.rating == 2 %}
+                            <span class="comment-rating rating-2">{{ c.rating }}/5</span>
+                        {% else %}
+                            <span class="comment-rating rating-1">{{ c.rating }}/5</span>
+                        {% endif %}
+                        – {{ c.content|default:"Brak treści komentarza" }}
+                    </li>
+                {% empty %}
+                    <li>Brak komentarzy.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <a href="{% url 'restaurant_list' %}" class="btn-back">⬅ Powrót do listy restauracji</a>
+    </div>
+</body>
+</html>

@@ -9,7 +9,7 @@ Projekt wykonany w Django.
 Do odpalenia strony trzeba wejść do folderu restauracje i użyć komende włączającą:
 
 
-cd restauracje␣␣
+cd restauracje  
 python manage.py runserver
 
 
